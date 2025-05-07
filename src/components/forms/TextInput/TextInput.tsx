@@ -1,7 +1,10 @@
 // src/components/forms/FormInput.js
+import { useThemeColor } from '@/src/hooks/useThemeColor';
 import React from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
-import { Text, TextInput, TextInputProps, View } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
+import Text from '../../commons/Text';
+import View from '../../commons/View';
 import styles from './TextInput.styles';
 
 type Props<T extends FieldValues> = TextInputProps &
@@ -15,8 +18,12 @@ export const FormInput = <T extends FieldValues>({
   placeholder,
   secureTextEntry,
   label,
+  lightColor,
+  darkColor,
   ...rest
 }: Props<T>) => {
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+
   return (
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
@@ -34,8 +41,9 @@ export const FormInput = <T extends FieldValues>({
               onChangeText={onChange}
               onBlur={onBlur}
               placeholder={placeholder}
-              style={[styles.input, error && styles.errorInput]}
+              style={[{ color }, styles.input, error && styles.errorInput]}
               secureTextEntry={secureTextEntry}
+              placeholderTextColor={color}
               {...rest}
             />
             {error && <Text style={styles.errorText}>{error.message}</Text>}

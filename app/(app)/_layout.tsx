@@ -1,6 +1,7 @@
 // app/(app)/_layout.js
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { Text } from 'react-native';
 
 export default function AppLayout() {
   return (
@@ -17,6 +18,9 @@ export default function AppLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
+          headerRight(props) {
+            return <Text>fdsaas</Text>;
+          },
         }}
       />
       <Tabs.Screen

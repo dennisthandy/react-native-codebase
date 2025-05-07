@@ -1,5 +1,8 @@
 // app/(auth)/login.js
+import Text from '@/src/components/commons/Text';
+import View from '@/src/components/commons/View';
 import { FormInput } from '@/src/components/forms/TextInput/TextInput';
+import { useScreenOptions } from '@/src/hooks/useHeaderOptions';
 import { useAppDispatch, useAppSelector } from '@/src/hooks/useStore';
 import { clearAuth } from '@/src/store/slices/auth/auth.slice';
 import { loginUser } from '@/src/store/slices/auth/auth.thunks';
@@ -7,13 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Href, router } from 'expo-router';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { z } from 'zod';
 
 const loginSchema = z.object({
@@ -33,6 +30,7 @@ const defaultValues = {
 };
 
 export default function Login() {
+  useScreenOptions({ title: 'Sign In' });
   const dispatch = useAppDispatch();
   const {
     login: { isSuccess, isLoading, isError, message, data },
@@ -119,18 +117,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 8,
     marginTop: 60,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
     marginBottom: 32,
   },
   errorContainer: {
@@ -150,7 +145,6 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   buttonText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },

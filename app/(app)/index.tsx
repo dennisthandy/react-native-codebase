@@ -1,16 +1,18 @@
-// app/(app)/index.js
+import Text from '@/src/components/commons/Text/';
+import View from '@/src/components/commons/View';
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 // Sample data
-const items = [
+type Data = { id: string; title: string; description: string };
+const items: Data[] = [
   { id: '1', title: 'Item 1', description: 'Description for item 1' },
   { id: '2', title: 'Item 2', description: 'Description for item 2' },
   { id: '3', title: 'Item 3', description: 'Description for item 3' },
 ];
 
 export default function Home() {
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Data }) => (
     <View style={styles.item}>
       <Text style={styles.itemTitle}>{item.title}</Text>
       <Text style={styles.itemDescription}>{item.description}</Text>
@@ -19,7 +21,7 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
+      <Text variant="h2">Home</Text>
       <FlatList
         data={items}
         renderItem={renderItem}

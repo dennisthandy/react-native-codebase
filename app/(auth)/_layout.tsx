@@ -1,30 +1,20 @@
 // app/(auth)/_layout.js
+import { useThemeColor } from '@/src/hooks/useThemeColor';
 import { Stack } from 'expo-router';
 
 export default function AuthLayout() {
+  const backgroundColor = useThemeColor({}, 'background');
+  const color = useThemeColor({}, 'text');
   return (
-    <Stack>
-      <Stack.Screen
-        name="login"
-        options={{
-          title: 'Sign In',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="register"
-        options={{
-          title: 'Create Account',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="forgot-password"
-        options={{
-          title: 'Reset Password',
-          headerShown: false,
-        }}
-      />
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor },
+        headerTintColor: color,
+      }}
+    >
+      <Stack.Screen name="login/index" />
+      <Stack.Screen name="register/index" />
+      <Stack.Screen name="forgot-password/index" />
     </Stack>
   );
 }
