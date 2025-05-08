@@ -19,7 +19,9 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.dennisthandy.reactnativecodebase"
+      "package": "com.dennisthandy.reactnativecodebase",
+      "enableDangerousExperimentalLeanBuilds": true,
+      "enableProguardInReleaseBuilds": true
     },
     "web": {
       "bundler": "metro",
@@ -46,6 +48,16 @@
             "./src/assets/fonts/Poppins-Bold.otf",
             "./src/assets/fonts/Poppins-SemiBold.otf"
           ]
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourceslnReleaseBuilds": true,
+            "useLegacyPackaging": true
+          }
         }
       ]
     ],
