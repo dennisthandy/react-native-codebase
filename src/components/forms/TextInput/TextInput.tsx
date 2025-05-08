@@ -7,14 +7,12 @@ import Text from '../../commons/Text';
 import View from '../../commons/View';
 import styles from '../Forms.styles';
 
-type Props<T extends FieldValues> = TextInputProps &
-  FieldProps &
-  UseControllerProps<T>;
+type Props<T extends FieldValues> = TextInputProps & FieldProps & UseControllerProps<T>;
 
 export const TextInput = <T extends FieldValues>({
   control,
   name,
-  rules = {},
+  rules,
   placeholder,
   secureTextEntry,
   label,
@@ -31,10 +29,7 @@ export const TextInput = <T extends FieldValues>({
         control={control}
         name={name}
         rules={rules}
-        render={({
-          field: { value, onChange, onBlur },
-          fieldState: { error },
-        }) => (
+        render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
           <>
             <RNTextInput
               value={value}
