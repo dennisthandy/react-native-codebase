@@ -1,7 +1,7 @@
 // app/(auth)/login.js
 import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
-import { FormInput } from '@/src/components/forms/TextInput/TextInput';
+import TextInput from '@/src/components/forms/TextInput/';
 import { useScreenOptions } from '@/src/hooks/useHeaderOptions';
 import { useAppDispatch, useAppSelector } from '@/src/hooks/useStore';
 import { clearAuth } from '@/src/store/slices/auth/auth.slice';
@@ -66,7 +66,7 @@ export default function Login() {
         </View>
       )}
 
-      <FormInput
+      <TextInput
         control={control}
         name="email"
         label="Email"
@@ -74,7 +74,7 @@ export default function Login() {
         keyboardType="email-address"
       />
 
-      <FormInput
+      <TextInput
         control={control}
         name="password"
         label="Password"

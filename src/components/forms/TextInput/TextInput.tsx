@@ -2,16 +2,16 @@
 import { useThemeColor } from '@/src/hooks/useThemeColor';
 import React from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
-import { TextInput, TextInputProps } from 'react-native';
+import { TextInput as RNTextInput, TextInputProps } from 'react-native';
 import Text from '../../commons/Text';
 import View from '../../commons/View';
-import styles from './TextInput.styles';
+import styles from '../Forms.styles';
 
 type Props<T extends FieldValues> = TextInputProps &
   FieldProps &
   UseControllerProps<T>;
 
-export const FormInput = <T extends FieldValues>({
+export const TextInput = <T extends FieldValues>({
   control,
   name,
   rules = {},
@@ -36,7 +36,7 @@ export const FormInput = <T extends FieldValues>({
           fieldState: { error },
         }) => (
           <>
-            <TextInput
+            <RNTextInput
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
