@@ -11,24 +11,22 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor for adding auth token
 apiClient.interceptors.request.use(
-  async (config) => {
+  async config => {
     const token = await SecureStore.getItemAsync('userToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
-  }
+  },
 );
 
-// Response interceptor for handling errors
 apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  response => response,
+  async error => {
     const originalRequest = error.config;
 
     // Handle token expiration and refresh logic here if needed
@@ -37,7 +35,7 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

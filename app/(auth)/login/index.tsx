@@ -1,4 +1,5 @@
 // app/(auth)/login.js
+import Button from '@/src/components/commons/Button';
 import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
 import TextInput from '@/src/components/forms/TextInput/';
@@ -10,14 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Href, router } from 'expo-router';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { z } from 'zod';
 
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email'),
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email'),
   password: z
     .string()
     .min(1, 'Password is required')
@@ -34,7 +32,7 @@ export default function Login() {
   const dispatch = useAppDispatch();
   const {
     login: { isSuccess, isLoading, isError, message, data },
-  } = useAppSelector((state) => state.auth);
+  } = useAppSelector(state => state.auth);
 
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(loginSchema),
@@ -82,32 +80,19 @@ export default function Login() {
         secureTextEntry
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSubmit(onSubmit)}
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Sign In</Text>
-        )}
-      </TouchableOpacity>
+      <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
+        Sign In
+      </Button>
 
-      <TouchableOpacity
-        style={styles.forgotPassword}
-        onPress={() => router.push('/(auth)/forgot-password' as Href)}
-      >
-        <Text style={styles.linkText}>Forgot Password?</Text>
-      </TouchableOpacity>
+      <Button variants="text" onPress={() => router.push('/(auth)/forgot-password' as Href)}>
+        Forgot Password?
+      </Button>
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Don&apos;t have an account? </Text>
-        <TouchableOpacity
-          onPress={() => router.push('/(auth)/register' as Href)}
-        >
-          <Text style={styles.linkText}>Sign Up</Text>
-        </TouchableOpacity>
+        <Button variants="text" onPress={() => router.push('/(auth)/register' as Href)}>
+          Sign Up
+        </Button>
       </View>
     </View>
   );
@@ -137,29 +122,10 @@ const styles = StyleSheet.create({
   errorText: {
     color: '#D32F2F',
   },
-  button: {
-    backgroundColor: '#2196F3',
-    borderRadius: 8,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginTop: 24,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  forgotPassword: {
-    alignSelf: 'center',
-    marginTop: 20,
-  },
-  linkText: {
-    color: '#2196F3',
-    fontWeight: '600',
-  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 36,
+    alignItems: 'center',
   },
   footerText: {
     color: '#666',

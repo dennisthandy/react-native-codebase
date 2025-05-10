@@ -2,16 +2,16 @@ import {
   FONTS,
   LINE_HEIGHTS,
   TEXT_VARIANTS,
+  TextVariant,
 } from '@/src/constants/typography.constants';
 import { useResponsiveTypography } from '@/src/hooks/useResponsiveTypography';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
 import { Text as RNText, type TextProps } from 'react-native';
 
-type Props = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  variant?: keyof typeof TEXT_VARIANTS;
-};
+type Props = TextProps &
+  ComponentProps & {
+    variant?: TextVariant;
+  };
 
 export function Text({
   style,
@@ -19,7 +19,7 @@ export function Text({
   darkColor,
   variant = 'body',
   children,
-  ...rest
+  ...props
 }: Props) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
   const fontSizes = useResponsiveTypography();
@@ -76,7 +76,7 @@ export function Text({
   };
 
   return (
-    <RNText style={[{ color }, variantStyles[variant], style]} {...rest}>
+    <RNText {...props} style={[{ color }, variantStyles[variant], style]}>
       {children}
     </RNText>
   );

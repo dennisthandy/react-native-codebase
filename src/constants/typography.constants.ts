@@ -71,3 +71,5 @@ export const TEXT_VARIANTS = {
     lineHeight: FONT_SIZES.base * LINE_HEIGHTS.tight,
   },
 };
+
+export type TextVariant = keyof typeof TEXT_VARIANTS;
