@@ -6,3 +6,8 @@ type AsyncThunkState<S> = {
 };
 
 type ClearState<S> = { key: S; withData?: boolean };
+
+type CallbackFn = {
+  onSuccess: (data?: unknown) => void;
+  onError: (data?: unknown) => void;
+};

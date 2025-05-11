@@ -1,13 +1,8 @@
-import {
-  ActionReducerMapBuilder,
-  AsyncThunk,
-  Draft,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import { ActionReducerMapBuilder, AsyncThunk, Draft, PayloadAction } from '@reduxjs/toolkit';
 
 export const clearState = <S extends string>(
   state: Draft<Record<S, ApiResponse<unknown>>>,
-  action: PayloadAction<ClearState<S>>
+  action: PayloadAction<ClearState<S>>,
 ) => {
   const nextState = state as Record<S, ApiResponse<unknown>>;
   const { key, withData } = action.payload;
@@ -19,12 +14,7 @@ export const clearState = <S extends string>(
   nextState[key].isLoading = false;
 };
 
-export const asyncThunkCreators = <S, T>({
-  state,
-  action,
-  type,
-  key,
-}: AsyncThunkState<S>) => {
+export const asyncThunkCreators = <S, T>({ state, action, type, key }: AsyncThunkState<S>) => {
   const payload = action ? (action.payload as ApiResponse<T>) : null;
 
   if (type === 'fulfilled' && payload) {
@@ -76,10 +66,9 @@ export const extraReducersBuilder = <S, T, P>({
       state,
       type: 'fulfilled',
     });
-    console.log(state[key], nextState[key], key);
     state[key] = nextState[key];
   });
-  builder.addCase(asyncThunk.pending, (state) => {
+  builder.addCase(asyncThunk.pending, state => {
     const nextState = asyncThunkCreators<S, T>({
       key,
       state,

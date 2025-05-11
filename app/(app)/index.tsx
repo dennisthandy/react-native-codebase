@@ -1,6 +1,8 @@
 import Text from '@/src/components/commons/Text/';
 import View from '@/src/components/commons/View';
-import React from 'react';
+import { ONBOARDING_STATUS } from '@/src/constants/storage.constants';
+import { getStorage } from '@/src/utils/storage.utils';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 // Sample data
@@ -12,6 +14,8 @@ const items: Data[] = [
 ];
 
 export default function Home() {
+  const onboarding = getStorage(ONBOARDING_STATUS);
+
   const renderItem = ({ item }: { item: Data }) => (
     <View style={styles.item}>
       <Text style={styles.itemTitle}>{item.title}</Text>
@@ -19,13 +23,17 @@ export default function Home() {
     </View>
   );
 
+  useEffect(() => {
+    console.log(onboarding);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text variant="h2">Home</Text>
+      <Text variant="h2">Home {JSON.stringify(onboarding)}</Text>
       <FlatList
         data={items}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         contentContainerStyle={styles.listContainer}
       />
     </View>
