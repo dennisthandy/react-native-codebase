@@ -3,12 +3,10 @@ import Button from '@/src/components/commons/Button';
 import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
 import TextInput from '@/src/components/forms/TextInput/';
-import { ONBOARDING_STATUS } from '@/src/constants/storage.constants';
 import { useScreenOptions } from '@/src/hooks/useHeaderOptions';
 import { useAppDispatch, useAppSelector } from '@/src/hooks/useStore';
 import { clearAuth } from '@/src/store/slices/auth/auth.slice';
 import { loginUser } from '@/src/store/slices/auth/auth.thunks';
-import { setStorage } from '@/src/utils/storage.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Href, router } from 'expo-router';
 import React, { useEffect } from 'react';
@@ -52,7 +50,6 @@ export default function Login() {
   }, [isSuccess]);
 
   const onSubmit = async (data: typeof defaultValues) => {
-    setStorage(ONBOARDING_STATUS, { status: true });
     dispatch(loginUser({ email: data.email, password: data.password }));
   };
 

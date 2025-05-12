@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getStorage } from '../utils/storage.utils';
+import { getStorage, setStorage } from '../utils/storage.utils';
 
-export function usePersistedState<T>(key: string, defaultValue: T) {
+export function usePersistedState<T>(key: string, defaultValue: T): [data: T, (data: T) => void] {
   const [value, setValue] = useState<T>(defaultValue);
 
   useEffect(() => {
@@ -11,6 +11,14 @@ export function usePersistedState<T>(key: string, defaultValue: T) {
     };
     getStoredValue();
   }, [key]);
+
+  useEffect(() => {
+    const seStorageValue = async () => {
+      console.log(value);
+      await setStorage(key, value);
+    };
+    seStorageValue();
+  }, [value, key]);
 
   return [value, setValue];
 }
