@@ -15,15 +15,16 @@ export async function setStorage(
 
 export async function getStorage<T>(
   key: string,
-  options?: SecureStore.SecureStoreOptions & CallbackFn,
+  options?: SecureStore.SecureStoreOptions & CallbackFn<T>,
 ) {
   try {
     const result = await SecureStore.getItemAsync(key);
-    if (options?.onSuccess) options.onSuccess(result);
-    return result as T;
+    const saved = (result ? JSON.parse(result) : '') as T;
+    if (options?.onSuccess) options.onSuccess(saved);
+    return saved;
   } catch (error) {
     if (options?.onError) options.onError(error);
-    return '';
+    return '' as T;
   }
 }
 

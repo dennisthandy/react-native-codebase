@@ -1,14 +1,17 @@
 // app/index.js
+import { ONBOARDING_STATUS } from '@/src/constants/storage.constants';
+import { usePersistedState } from '@/src/hooks/usePersistedState';
 import { useAppSelector } from '@/src/hooks/useStore';
 import { Href, Redirect } from 'expo-router';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export default function Index() {
-  const { data: isAuthenticated, isLoading } = useAppSelector(
-    (state) => state.auth.login
-  );
+  const [onboarding, _, isLoadingOnboarding] = usePersistedState(ONBOARDING_STATUS, {
+    status: false,
+  });
+  const { data: isAuthenticated, isLoading } = useAppSelector(state => state.auth.login);
 
-  if (isLoading) {
+  if (isLoading || isLoadingOnboarding) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#2196F3" />
@@ -20,7 +23,11 @@ export default function Index() {
     return <Redirect href={'/(app)' as Href} />;
   }
 
-  return <Redirect href={'/(auth)/login' as Href} />;
+  if (onboarding.status) {
+    return <Redirect href={'/(auth)/login' as Href} />;
+  }
+
+  return <Redirect href={'/onboarding' as Href} />;
 }
 
 const styles = StyleSheet.create({

@@ -75,5 +75,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     padding: 0,
     borderRadius: 0,
+    height: 44,
+    minWidth: 44,
+    width: 44,
   },
 });

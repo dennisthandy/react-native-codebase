@@ -1,24 +1,33 @@
 import { useEffect, useState } from 'react';
 import { getStorage, setStorage } from '../utils/storage.utils';
 
-export function usePersistedState<T>(key: string, defaultValue: T): [data: T, (data: T) => void] {
+type UsePersistedStateReturn<T> = [data: T, (data: T) => void, boolean];
+
+export function usePersistedState<T>(key: string, defaultValue: T): UsePersistedStateReturn<T> {
   const [value, setValue] = useState<T>(defaultValue);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getStoredValue = async () => {
-      const result = await getStorage<T>(key);
-      if (result) setValue(result);
+      await getStorage<T>(key, {
+        onSuccess: result => {
+          if (result) setValue(result);
+        },
+        onError: () => setValue(defaultValue),
+      });
+      setIsLoading(false);
     };
     getStoredValue();
-  }, [key]);
+  }, [defaultValue, key]);
 
   useEffect(() => {
     const seStorageValue = async () => {
-      console.log(value);
       await setStorage(key, value);
     };
-    seStorageValue();
-  }, [value, key]);
+    if (!isLoading) {
+      seStorageValue();
+    }
+  }, [value, key, isLoading]);
 
-  return [value, setValue];
+  return [value, setValue, isLoading];
 }

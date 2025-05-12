@@ -21,3 +21,5 @@ export const isLargeDevice = width >= 768;
 // We can also detect orientation
 export const isPortrait = height > width;
 export const isLandscape = width > height;
+
+export const dimensions = { height, width };
