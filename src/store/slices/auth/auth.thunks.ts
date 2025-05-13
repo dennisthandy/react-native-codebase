@@ -1,43 +1,42 @@
+import { USER_DATA } from '@/src/constants/storage.constants';
+import { setStorage } from '@/src/utils/storage.utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 // Async thunks
-export const loginUser = createAsyncThunk<
-  unknown,
-  { email: string; password: string }
->('auth/login', async (payload, { rejectWithValue }) => {
+export const loginUser = createAsyncThunk<unknown, { email: string; password: string }>(
+  'auth/login',
+  async (payload, { rejectWithValue }) => {
+    try {
+      // In a real app, replace with actual API call
+      // const response = await authApi.login(email, password);
+
+      // For demo purposes, simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Simulate successful login
+      const userData = {
+        id: '123',
+        email: payload.email,
+        name: 'Demo User',
+      };
+      const token = 'demo-auth-token';
+      // Store token in secure storage
+      await setStorage(USER_DATA, { user: userData, token });
+      return { user: userData, token };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const logoutUser = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    // In a real app, replace with actual API call
-    // const response = await authApi.login(email, password);
-
-    // For demo purposes, simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Simulate successful login
-    const userData = {
-      id: '123',
-      email: payload.email,
-      name: 'Demo User',
-    };
-    const token = 'demo-auth-token';
-    // Store token in secure storage
-    await SecureStore.setItemAsync('userToken', token);
-    return { user: userData, token };
+    await SecureStore.deleteItemAsync('userToken');
+    return null;
   } catch (error) {
     return rejectWithValue(error);
   }
 });
-
-export const logoutUser = createAsyncThunk(
-  'auth/logout',
-  async (_, { rejectWithValue }) => {
-    try {
-      await SecureStore.deleteItemAsync('userToken');
-      return null;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
 
 export const checkAuthStatus = createAsyncThunk(
   'auth/checkStatus',
@@ -60,5 +59,5 @@ export const checkAuthStatus = createAsyncThunk(
       await SecureStore.deleteItemAsync('userToken');
       return rejectWithValue(error);
     }
-  }
+  },
 );

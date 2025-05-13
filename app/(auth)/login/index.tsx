@@ -25,8 +25,8 @@ const loginSchema = z.object({
 });
 
 const defaultValues = {
-  email: '',
-  password: '',
+  email: 'test@mail.com',
+  password: '111111',
 };
 
 export default function Login() {

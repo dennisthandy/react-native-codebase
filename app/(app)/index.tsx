@@ -1,8 +1,9 @@
+import Badge from '@/src/components/commons/Badge';
 import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 
 // Sample data
 type Data = { id: string; title: string; description: string };
@@ -100,7 +101,20 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text variant="h2">Home</Text>
-      {/* <Grid data={items} renderItem={renderItem} /> */}
+      <ScrollView horizontal style={{ backgroundColor: 'white', flexGrow: 0 }}>
+        <Badge value="Danger" type="danger" />
+        <Badge value="Info" type="info" />
+        <Badge value="Neutral" type="neutral" />
+        <Badge value="Primary" type="primary" />
+        <Badge value="Success" type="success" />
+        <Badge value="Warning" type="warning" />
+        <Badge value="Danger" type="danger" variant="outlined" />
+        <Badge value="Info" type="info" variant="outlined" />
+        <Badge value="Neutral" type="neutral" variant="outlined" />
+        <Badge value="Primary" type="primary" variant="outlined" />
+        <Badge value="Success" type="success" variant="outlined" />
+        <Badge value="Warning" type="warning" variant="outlined" />
+      </ScrollView>
       <MasonryGrid data={masonryItems} renderItem={renderMasonryItem} numColumns={2} spacing={12} />
     </View>
   );
