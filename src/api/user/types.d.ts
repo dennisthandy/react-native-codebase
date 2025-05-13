@@ -5,5 +5,5 @@ type User = {
   bio: string;
   location: string;
   phone: string;
-  profileImage: null;
+  profileImage: string;
 };

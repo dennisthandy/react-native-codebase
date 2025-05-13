@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { ALL_STORAGE_KEYS } from '../constants/storage.constants';
 
 export async function setStorage(
   key: string,
@@ -34,6 +35,17 @@ export async function removeStorage(
 ) {
   try {
     await SecureStore.deleteItemAsync(key);
+    if (options?.onSuccess) options.onSuccess();
+  } catch (error) {
+    if (options?.onError) options.onError(error);
+  }
+}
+
+export async function clearAllStorage(options?: SecureStore.SecureStoreOptions & CallbackFn) {
+  try {
+    for (const key of ALL_STORAGE_KEYS) {
+      await SecureStore.deleteItemAsync(key);
+    }
     if (options?.onSuccess) options.onSuccess();
   } catch (error) {
     if (options?.onError) options.onError(error);

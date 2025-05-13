@@ -1,62 +1,69 @@
-import { USER_DATA } from '@/src/constants/storage.constants';
-import { setStorage } from '@/src/utils/storage.utils';
+import { defaultState } from '@/src/constants/state.constants';
+import { USER_DATA, USER_TOKEN } from '@/src/constants/storage.constants';
+import { clearAllStorage, getStorage, removeStorage, setStorage } from '@/src/utils/storage.utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as SecureStore from 'expo-secure-store';
+
 // Async thunks
-export const loginUser = createAsyncThunk<unknown, { email: string; password: string }>(
+export const loginUser = createAsyncThunk<ApiResponse<User>, { email: string; password: string }>(
   'auth/login',
   async (payload, { rejectWithValue }) => {
     try {
-      // In a real app, replace with actual API call
-      // const response = await authApi.login(email, password);
-
-      // For demo purposes, simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Simulate successful login
-      const userData = {
-        id: '123',
-        email: payload.email,
-        name: 'Demo User',
-      };
       const token = 'demo-auth-token';
-      // Store token in secure storage
-      await setStorage(USER_DATA, { user: userData, token });
-      return { user: userData, token };
+      await setStorage(USER_TOKEN, token);
+
+      return {
+        ...defaultState,
+        isSuccess: true,
+        code: 200,
+        data: {
+          id: 'demo-id',
+          name: 'Demo User',
+          email: payload.email,
+          bio: 'demo bio',
+          location: 'demo location',
+          phone: '082312321212',
+          profileImage: 'string',
+        },
+      };
     } catch (error) {
       return rejectWithValue(error);
     }
   },
 );
 
-export const logoutUser = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
-  try {
-    await SecureStore.deleteItemAsync('userToken');
-    return null;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
+export const logoutUser = createAsyncThunk<ApiResponse<unknown>, unknown>(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await clearAllStorage();
+      return { ...defaultState, isSuccess: true, code: 200 };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
-export const checkAuthStatus = createAsyncThunk(
+export const checkAuthStatus = createAsyncThunk<ApiResponse<{ isAuthenticated: boolean }>, unknown>(
   'auth/checkStatus',
   async (_, { rejectWithValue }) => {
     try {
-      const token = await SecureStore.getItemAsync('userToken');
+      const token = await getStorage<string>(USER_TOKEN);
 
       if (!token) {
-        return { isAuthenticated: false };
+        return {
+          ...defaultState,
+          code: 401,
+          error: true,
+          message: 'token expired',
+          data: { isAuthenticated: false },
+        };
       }
 
-      // In a real app, validate token with the server
-      // const user = await authApi.validateToken(token);
-
-      // For demo purposes
-      const user = { id: '123', name: 'Demo User', email: 'user@example.com' };
-
-      return { isAuthenticated: true, user, token };
+      return { ...defaultState, code: 200, isSuccess: true, data: { isAuthenticated: true } };
     } catch (error) {
-      await SecureStore.deleteItemAsync('userToken');
+      await removeStorage(USER_DATA);
       return rejectWithValue(error);
     }
   },

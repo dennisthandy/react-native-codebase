@@ -1,15 +1,22 @@
 // app/index.js
 import { ONBOARDING_STATUS } from '@/src/constants/storage.constants';
 import { usePersistedState } from '@/src/hooks/usePersistedState';
-import { useAppSelector } from '@/src/hooks/useStore';
+import { useAppDispatch, useAppSelector } from '@/src/hooks/useStore';
+import { checkAuthStatus } from '@/src/store/slices/auth/auth.thunks';
 import { Href, Redirect } from 'expo-router';
+import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export default function Index() {
+  const dispatch = useAppDispatch();
   const [onboarding, _, isLoadingOnboarding] = usePersistedState(ONBOARDING_STATUS, {
     status: false,
   });
-  const { data: isAuthenticated, isLoading } = useAppSelector(state => state.auth.login);
+  const { data, isLoading } = useAppSelector(state => state.auth.status);
+
+  useEffect(() => {
+    dispatch(checkAuthStatus({}));
+  }, [dispatch]);
 
   if (isLoading || isLoadingOnboarding) {
     return (
@@ -19,7 +26,7 @@ export default function Index() {
     );
   }
 
-  if (isAuthenticated) {
+  if (data?.isAuthenticated) {
     return <Redirect href={'/(app)' as Href} />;
   }
 

@@ -7,25 +7,24 @@ import * as thunks from './auth.thunks';
 type AuthState = {
   login: ApiResponse<LoginResponse | null>;
   logout: ApiResponse<unknown>;
+  status: ApiResponse<{ isAuthenticated: boolean } | null>;
 };
 
 const initialState: AuthState = {
   login: defaultState,
   logout: defaultState,
+  status: defaultState,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    clearAuth: (
-      state,
-      action: PayloadAction<ClearState<keyof typeof state>>
-    ) => {
+    clearAuth: (state, action: PayloadAction<ClearState<keyof typeof state>>) => {
       clearState(state, action);
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     extraReducersBuilder({
       builder,
       key: 'login',
@@ -35,6 +34,11 @@ const authSlice = createSlice({
       builder,
       key: 'logout',
       asyncThunk: thunks.logoutUser,
+    });
+    extraReducersBuilder({
+      builder,
+      key: 'status',
+      asyncThunk: thunks.checkAuthStatus,
     });
   },
 });
