@@ -7,3 +7,12 @@ type ComponentProps = Partial<{
 }>;
 
 type ButtonVariant = 'fill' | 'outline' | 'text' | 'icon';
+
+type MansoryItem = {
+  id: string;
+  title: string;
+  image: string;
+  height: number;
+  color: string;
+  index?: number;
+};

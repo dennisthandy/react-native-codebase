@@ -1,8 +1,8 @@
-import Grid from '@/src/components/commons/Grid';
+import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 // Sample data
 type Data = { id: string; title: string; description: string };
@@ -14,6 +14,64 @@ const items: Data[] = [
   { id: '5', title: 'Item 4', description: 'Description for item 5' },
   { id: '5', title: 'Item 4', description: 'Description for item 5' },
 ];
+const masonryItems = [
+  {
+    id: '1',
+    title: 'Hiking Trip',
+    image: 'https://via.placeholder.com/400x600',
+    height: 250,
+    color: '#FFD700',
+  },
+  {
+    id: '2',
+    title: 'Beach Sunset',
+    image: 'https://via.placeholder.com/400x300',
+    height: 180,
+    color: '#90EE90',
+  },
+  {
+    id: '3',
+    title: 'City Skyline',
+    image: 'https://via.placeholder.com/400x500',
+    height: 220,
+    color: '#ADD8E6',
+  },
+  {
+    id: '4',
+    title: 'Mountain View',
+    image: 'https://via.placeholder.com/400x700',
+    height: 280,
+    color: '#FFA07A',
+  },
+  {
+    id: '5',
+    title: 'Forest Path',
+    image: 'https://via.placeholder.com/400x450',
+    height: 200,
+    color: '#E6E6FA',
+  },
+  {
+    id: '6',
+    title: 'Ocean Waves',
+    image: 'https://via.placeholder.com/400x350',
+    height: 190,
+    color: '#FFDAB9',
+  },
+  {
+    id: '7',
+    title: 'Desert Landscape',
+    image: 'https://via.placeholder.com/400x550',
+    height: 230,
+    color: '#F0E68C',
+  },
+  {
+    id: '8',
+    title: 'Snowy Mountains',
+    image: 'https://via.placeholder.com/400x400',
+    height: 210,
+    color: '#B0C4DE',
+  },
+];
 
 export default function Home() {
   const renderItem = ({ item }: { item: Data }) => (
@@ -23,10 +81,27 @@ export default function Home() {
     </View>
   );
 
+  const renderMasonryItem = ({ item }: { item: (typeof masonryItems)[0] }) => {
+    return (
+      <TouchableOpacity
+        style={[styles.itemContainer, { backgroundColor: item.color, height: item.height }]}
+        onPress={() => console.log(`Masonry item ${item.id} pressed`)}
+      >
+        <Image
+          source={{ uri: item.image }}
+          style={[styles.itemImage, { height: item.height * 0.65 }]}
+          resizeMode="cover"
+        />
+        <Text style={styles.itemTitle}>{item.title}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text variant="h2">Home</Text>
-      <Grid data={items} renderItem={renderItem} />
+      {/* <Grid data={items} renderItem={renderItem} /> */}
+      <MasonryGrid data={masonryItems} renderItem={renderMasonryItem} numColumns={2} spacing={12} />
     </View>
   );
 }
@@ -34,7 +109,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -59,5 +133,17 @@ const styles = StyleSheet.create({
   itemDescription: {
     fontSize: 16,
     color: '#666',
+  },
+  itemContainer: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  itemImage: {
+    width: '100%',
   },
 });
