@@ -5,7 +5,7 @@ import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import { TextInput as RNTextInput, TextInputProps } from 'react-native';
 import Text from '../../commons/Text';
 import View from '../../commons/View';
-import styles from '../Forms.styles';
+import styles from '../forms.styles';
 
 type Props<T extends FieldValues> = TextInputProps & FieldProps & UseControllerProps<T>;
 

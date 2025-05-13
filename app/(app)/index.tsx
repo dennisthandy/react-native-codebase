@@ -1,7 +1,8 @@
-import Text from '@/src/components/commons/Text/';
+import Grid from '@/src/components/commons/Grid';
+import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 // Sample data
 type Data = { id: string; title: string; description: string };
@@ -9,6 +10,9 @@ const items: Data[] = [
   { id: '1', title: 'Item 1', description: 'Description for item 1' },
   { id: '2', title: 'Item 2', description: 'Description for item 2' },
   { id: '3', title: 'Item 3', description: 'Description for item 3' },
+  { id: '4', title: 'Item 4', description: 'Description for item 4' },
+  { id: '5', title: 'Item 4', description: 'Description for item 5' },
+  { id: '5', title: 'Item 4', description: 'Description for item 5' },
 ];
 
 export default function Home() {
@@ -22,12 +26,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text variant="h2">Home</Text>
-      <FlatList
-        data={items}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContainer}
-      />
+      <Grid data={items} renderItem={renderItem} />
     </View>
   );
 }
@@ -36,7 +35,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
@@ -50,7 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 20,
     borderRadius: 8,
-    marginBottom: 15,
     borderWidth: 1,
     borderColor: '#eee',
   },
