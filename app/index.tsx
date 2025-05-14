@@ -27,7 +27,7 @@ export default function Index() {
   }
 
   if (data?.isAuthenticated) {
-    return <Redirect href={'/(app)' as Href} />;
+    return <Redirect href={'/(drawer)/(tabs)' as Href} />;
   }
 
   if (onboarding.status) {

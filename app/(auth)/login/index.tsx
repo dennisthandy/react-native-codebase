@@ -44,7 +44,7 @@ export default function Login() {
   useEffect(() => {
     // Redirect if already authenticated
     if (isSuccess) {
-      router.replace('/(app)' as Href);
+      router.replace('/(drawer)/(tabs)' as Href);
     }
 
     // Clear errors when component mounts
