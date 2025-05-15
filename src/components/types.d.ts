@@ -4,6 +4,7 @@ type ComponentProps = Partial<{
   darkColor: string;
   leftIcon: ReactNode;
   rightIcon: ReactNode;
+  loadingPosition: 'center' | 'left' | 'right';
 }>;
 
 type ButtonVariant = 'fill' | 'outline' | 'text' | 'icon';

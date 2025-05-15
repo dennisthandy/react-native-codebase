@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableOpacityProps,
   useColorScheme,
+  View,
 } from 'react-native';
 import Text from '../Text';
 
@@ -22,6 +23,9 @@ export const Button: FC<Props> = ({
   children,
   textProps,
   variants = 'fill',
+  leftIcon,
+  rightIcon,
+  loadingPosition = 'center',
   ...props
 }) => {
   const theme = useColorScheme();
@@ -40,6 +44,8 @@ export const Button: FC<Props> = ({
       children
     );
 
+  const isDisabled = isLoading || disabled;
+
   return (
     <TouchableOpacity
       {...props}
@@ -48,10 +54,25 @@ export const Button: FC<Props> = ({
         { backgroundColor, borderColor: variants === 'outline' ? backgroundColor : '' },
         styles[variants as keyof typeof styles],
         style,
+        { opacity: isDisabled ? 0.75 : 1 },
       ]}
-      disabled={isLoading || disabled}
+      disabled={isDisabled}
     >
-      {isLoading ? <ActivityIndicator color={color} /> : content}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {isLoading && loadingPosition === 'left' && (
+          <ActivityIndicator style={{ marginRight: 6 }} color={textColor} />
+        )}
+        {leftIcon && !isLoading && <View style={{ marginRight: 6 }}>{leftIcon}</View>}
+        {isLoading && loadingPosition === 'center' ? (
+          <ActivityIndicator color={textColor} />
+        ) : (
+          content
+        )}
+        {rightIcon && !isLoading && <View style={{ marginLeft: 6 }}>{rightIcon}</View>}
+        {isLoading && loadingPosition === 'right' && (
+          <ActivityIndicator style={{ marginLeft: 6 }} color={textColor} />
+        )}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -59,24 +80,30 @@ export const Button: FC<Props> = ({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 8,
-    paddingVertical: 14,
+    paddingVertical: 12,
     alignItems: 'center',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 20,
   },
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 1,
+    paddingVertical: 11,
   },
   text: {
     backgroundColor: 'transparent',
     padding: 0,
     borderRadius: 0,
+    height: 'auto',
   },
   icon: {
-    backgroundColor: 'transparent',
     padding: 0,
-    borderRadius: 0,
-    height: 44,
+    borderRadius: 8,
+    minHeight: 44,
     minWidth: 44,
     width: 44,
+    paddingHorizontal: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
