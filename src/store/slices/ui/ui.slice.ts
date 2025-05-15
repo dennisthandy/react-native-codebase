@@ -1,5 +1,5 @@
 // src/store/slices/uiSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Toast {
   id: number;
@@ -7,16 +7,20 @@ interface Toast {
   type: string;
 }
 
-const initialState: {
+type UIState = {
   isLoading: boolean;
   toasts: Toast[];
   modalVisible: boolean;
   modalContent: any;
-} = {
+  drawer: { title: string };
+};
+
+const initialState: UIState = {
   isLoading: false,
   toasts: [],
   modalVisible: false,
   modalContent: null,
+  drawer: { title: 'Home' },
 };
 
 const uiSlice = createSlice({
@@ -34,22 +38,23 @@ const uiSlice = createSlice({
       });
     },
     removeToast: (state, action) => {
-      state.toasts = state.toasts.filter(
-        (toast) => toast.id !== action.payload
-      );
+      state.toasts = state.toasts.filter(toast => toast.id !== action.payload);
     },
     showModal: (state, action) => {
       state.modalVisible = true;
       state.modalContent = action.payload;
     },
-    hideModal: (state) => {
+    hideModal: state => {
       state.modalVisible = false;
       state.modalContent = null;
+    },
+    setDrawerTitle: (state, action: PayloadAction<string>) => {
+      state.drawer.title = action.payload;
     },
   },
 });
 
-export const { setLoading, showToast, removeToast, showModal, hideModal } =
+export const { setDrawerTitle, setLoading, showToast, removeToast, showModal, hideModal } =
   uiSlice.actions;
 
 export default uiSlice.reducer;
