@@ -1,7 +1,9 @@
 import Accordion from '@/src/components/commons/Accordion';
+import Alert from '@/src/components/commons/Alert';
 import Badge from '@/src/components/commons/Badge';
 import Button from '@/src/components/commons/Button';
 import Grid from '@/src/components/commons/Grid';
+import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
 import View from '@/src/components/commons/View';
 import { colors } from '@/src/constants/colors.constants';
@@ -145,6 +147,109 @@ export default function Components() {
                   </Text>
                 </View>
               )}
+            />
+          </View>
+          <View style={{ marginTop: 4, display: 'none' }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Mansory Grid
+            </Text>
+            <MasonryGrid
+              data={[
+                {
+                  color: colors.primary.main,
+                  height: 200,
+                  id: 'grid-1',
+                  image: '',
+                  title: 'Grid 1',
+                },
+                {
+                  color: colors.secondary.main,
+                  height: 100,
+                  id: 'grid-2',
+                  image: '',
+                  title: 'Grid 2',
+                },
+                {
+                  color: colors.support.error[500],
+                  height: 300,
+                  id: 'grid-3',
+                  image: '',
+                  title: 'Grid 3',
+                },
+                {
+                  color: colors.support.success[500],
+                  height: 250,
+                  id: 'grid-4',
+                  image: '',
+                  title: 'Grid 4',
+                },
+                {
+                  color: colors.support.warning[500],
+                  height: 150,
+                  id: 'grid-5',
+                  image: '',
+                  title: 'Grid 5',
+                },
+              ]}
+              numColumns={3}
+              renderItem={({ item }) => (
+                <View
+                  style={{
+                    backgroundColor: item.color,
+                    padding: 4,
+                    height: item.height,
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 8,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                </View>
+              )}
+            />
+          </View>
+          <View style={{ marginTop: 4 }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Alert
+            </Text>
+            <Alert message="This is alert" style={{ marginBottom: 8 }} />
+            <Alert
+              message="This is alert"
+              closeable={false}
+              description="This is alert description"
+              variant="info"
+              style={{ marginBottom: 8 }}
+            />
+            <Alert
+              message="This is alert"
+              closeable={false}
+              variant="error"
+              style={{ marginBottom: 8 }}
+            />
+            <Alert
+              message="This is alert"
+              closeable={false}
+              variant="success"
+              style={{ marginBottom: 8 }}
+            />
+            <Alert message="This is alert" variant="warning" style={{ marginBottom: 8 }} />
+            <Alert
+              message="This is alert"
+              icon={
+                <MaterialCommunityIcons
+                  name="account"
+                  size={22}
+                  color={colors.support.warning[800]}
+                />
+              }
+              variant="warning"
+              style={{ marginBottom: 8 }}
             />
           </View>
         </View>

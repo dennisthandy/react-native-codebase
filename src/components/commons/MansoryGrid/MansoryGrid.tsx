@@ -60,7 +60,7 @@ export function MasonryGrid({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={[styles.container, containerStyle]}>
-      <View style={[styles.gridContainer, { padding: spacing }]}>
+      <View style={styles.gridContainer}>
         {columns.map((column, columnIndex) => (
           <View
             key={`column-${columnIndex}`}

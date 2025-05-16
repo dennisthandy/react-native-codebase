@@ -17,3 +17,5 @@ type MansoryItem = {
   color: string;
   index?: number;
 };
+
+type AlertVariant = 'info' | 'success' | 'warning' | 'error' | 'default';

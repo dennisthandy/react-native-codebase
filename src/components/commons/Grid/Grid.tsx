@@ -20,13 +20,12 @@ export function Grid<T>({
   showsVerticalScrollIndicator = false,
   ...props
 }: Props<T>) {
-  const isOddData = Number(data?.length) % 2 === 1;
   // Calculate item dimensions based on number of columns and spacing
   const renderGridItem = ({ item, index }: { item: T; index: number }) => {
     const isLastInRow = (index + 1) % numColumns === 0;
     const isLastRow =
       Math.ceil(Number(data?.length) / numColumns) === Math.ceil((index + 1) / numColumns);
-    const isLastItem = isOddData && index === Number(data?.length) - 1;
+    const isLastItem = index === Number(data?.length) - 1;
     return (
       <View
         style={[
