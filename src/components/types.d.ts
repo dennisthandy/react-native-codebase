@@ -7,7 +7,7 @@ type ComponentProps = Partial<{
   loadingPosition: 'center' | 'left' | 'right';
 }>;
 
-type ButtonVariant = 'fill' | 'outline' | 'text' | 'icon';
+type ButtonVariant = 'fill' | 'outlined' | 'text' | 'icon';
 
 type MansoryItem = {
   id: string;
@@ -19,3 +19,5 @@ type MansoryItem = {
 };
 
 type AlertVariant = 'info' | 'success' | 'warning' | 'error' | 'default';
+
+type CardVariant = 'default' | 'outlined';

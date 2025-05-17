@@ -43,6 +43,11 @@ export function Text({
       fontSize: fontSizes.lg,
       lineHeight: fontSizes.lg * LINE_HEIGHTS.tight,
     },
+    h4: {
+      fontFamily: FONTS.medium,
+      fontSize: fontSizes.md,
+      lineHeight: fontSizes.md * LINE_HEIGHTS.tight,
+    },
     body: {
       fontFamily: FONTS.regular,
       fontSize: fontSizes.base,

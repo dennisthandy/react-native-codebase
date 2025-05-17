@@ -40,6 +40,11 @@ export const TEXT_VARIANTS = {
     fontSize: FONT_SIZES.lg,
     lineHeight: FONT_SIZES.lg * LINE_HEIGHTS.tight,
   },
+  h4: {
+    fontFamily: FONTS.medium,
+    fontSize: FONT_SIZES.md,
+    lineHeight: FONT_SIZES.md * LINE_HEIGHTS.tight,
+  },
   body: {
     fontFamily: FONTS.regular,
     fontSize: FONT_SIZES.base,

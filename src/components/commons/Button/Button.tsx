@@ -31,7 +31,7 @@ export const Button: FC<Props> = ({
   const theme = useColorScheme();
   const backgroundColor = useThemeColor({}, 'text');
   const color = useThemeColor({}, 'background');
-  const outlineColor = variants === 'outline' ? backgroundColor : color;
+  const outlineColor = variants === 'outlined' ? backgroundColor : color;
   const textColor =
     variants === 'text' ? colors.primary[theme as keyof typeof colors.primary] : outlineColor;
 
@@ -51,7 +51,7 @@ export const Button: FC<Props> = ({
       {...props}
       style={[
         styles.button,
-        { backgroundColor, borderColor: variants === 'outline' ? backgroundColor : '' },
+        { backgroundColor, borderColor: variants === 'outlined' ? backgroundColor : '' },
         styles[variants as keyof typeof styles],
         style,
         { opacity: isDisabled ? 0.75 : 1 },
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 20,
   },
-  outline: {
+  outlined: {
     backgroundColor: 'transparent',
     borderWidth: 1,
     paddingVertical: 11,

@@ -2,6 +2,7 @@ import Accordion from '@/src/components/commons/Accordion';
 import Alert from '@/src/components/commons/Alert';
 import Badge from '@/src/components/commons/Badge';
 import Button from '@/src/components/commons/Button';
+import Card from '@/src/components/commons/Card';
 import Grid from '@/src/components/commons/Grid';
 import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
@@ -74,7 +75,7 @@ export default function Components() {
               <Button variants="icon" style={{ marginRight: 8 }}>
                 <MaterialCommunityIcons name="account" />
               </Button>
-              <Button style={{ marginRight: 8 }} variants="outline">
+              <Button style={{ marginRight: 8 }} variants="outlined">
                 Hello
               </Button>
               <Button style={{ marginRight: 8 }} variants="text">
@@ -95,7 +96,7 @@ export default function Components() {
               <Button style={{ marginRight: 8 }} isLoading={true}>
                 Hello
               </Button>
-              <Button style={{ marginRight: 8 }} isLoading={true} variants="outline">
+              <Button style={{ marginRight: 8 }} isLoading={true} variants="outlined">
                 Hello
               </Button>
               <Button style={{ marginRight: 8 }} isLoading={true} loadingPosition="left">
@@ -104,7 +105,7 @@ export default function Components() {
               <Button
                 style={{ marginRight: 8, backgroundColor: colors.primary.main }}
                 isLoading={true}
-                variants="outline"
+                variants="outlined"
                 loadingPosition="right"
               >
                 Hello
@@ -251,6 +252,57 @@ export default function Components() {
               variant="warning"
               style={{ marginBottom: 8 }}
             />
+          </View>
+          <View style={{ marginTop: 4 }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Card
+            </Text>
+            <View style={{ paddingHorizontal: 4 }}>
+              <Card title="Basic Card" subtitle="Test Subtitle">
+                <Text>This is a simple card with some content.</Text>
+              </Card>
+              <Card
+                title="Card with Image"
+                subtitle="Beautiful scenery"
+                imageSource="https://images.unsplash.com/photo-1742017193358-e4f271a6b7b9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                imageHeight={180}
+                shadowIntensity={5}
+              >
+                <Text>This card has an image header.</Text>
+              </Card>
+              <Card
+                variant="outlined"
+                title="Outlined Card"
+                subtitle="test"
+                footer={
+                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <Button style={{ marginRight: 8 }}>Cancel</Button>
+                    <Button variants="outlined">Ok</Button>
+                  </View>
+                }
+              >
+                <Text>This card has a custom footer with buttons.</Text>
+              </Card>
+              <Card
+                title="Touchable Card"
+                subtitle="Click me"
+                shadowIntensity={3}
+                onPress={() => console.log('Card pressed')}
+              >
+                <Text>This entire card is touchable.</Text>
+              </Card>
+            </View>
+            {/*
+            
+            
+            <Card
+              variant="filled"
+              title="Custom Styled Card"
+              style={{ borderRadius: 16 }}
+              titleStyle={{ color: 'purple', fontSize: 22 }}
+            >
+              <Text>This card has custom styling.</Text>
+            </Card> */}
           </View>
         </View>
       </ScrollView>
