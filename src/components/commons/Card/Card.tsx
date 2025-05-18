@@ -1,16 +1,15 @@
 import React from 'react';
-import { ImageStyle, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  ImageStyle,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 import CardContent from './parts/CardContent';
 
-type Props = {
-  variant?: CardVariant;
-  children: React.ReactNode;
-  title?: string;
-  subtitle?: string;
-  imageSource?: string | { uri: string };
-  imageHeight?: number;
-  footer?: React.ReactNode;
-  onPress?: () => void;
+export type CardProps = ViewProps & {
   style?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
   subtitleStyle?: StyleProp<TextStyle>;
@@ -18,6 +17,16 @@ type Props = {
   imageStyle?: StyleProp<ImageStyle>;
   footerStyle?: StyleProp<ViewStyle>;
   shadowIntensity?: 0 | 1 | 2 | 3 | 4 | 5;
+  variant?: CardVariant;
+  title?: string;
+  subtitle?: string;
+  imageSource?: string | { uri: string };
+  imageHeight?: number;
+  footer?: React.ReactNode;
+};
+
+type Props = CardProps & {
+  onPress?: () => void;
 };
 
 export const Card: React.FC<Props> = ({ onPress, ...props }) => {

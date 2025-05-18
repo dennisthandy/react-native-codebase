@@ -3,6 +3,7 @@ import Alert from '@/src/components/commons/Alert';
 import Badge from '@/src/components/commons/Badge';
 import Button from '@/src/components/commons/Button';
 import Card from '@/src/components/commons/Card';
+import Carousel from '@/src/components/commons/Carousel';
 import Grid from '@/src/components/commons/Grid';
 import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
@@ -10,7 +11,7 @@ import View from '@/src/components/commons/View';
 import { colors } from '@/src/constants/colors.constants';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ScrollView } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 
 export default function Components() {
   const color = useThemeColor({}, 'text');
@@ -292,17 +293,67 @@ export default function Components() {
                 <Text>This entire card is touchable.</Text>
               </Card>
             </View>
-            {/*
-            
-            
-            <Card
-              variant="filled"
-              title="Custom Styled Card"
-              style={{ borderRadius: 16 }}
-              titleStyle={{ color: 'purple', fontSize: 22 }}
-            >
-              <Text>This card has custom styling.</Text>
-            </Card> */}
+          </View>
+          <View style={{ marginTop: 4 }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Carousel
+            </Text>
+            <View style={{ paddingHorizontal: 4 }}>
+              <Carousel
+                showArrows
+                style={{ borderRadius: 8 }}
+                data={[
+                  { id: 1, title: 'Slide 1', color: '#FF5722' },
+                  { id: 2, title: 'Slide 2', color: '#03A9F4' },
+                  { id: 3, title: 'Slide 3', color: '#4CAF50' },
+                ]}
+                height={250}
+                renderItem={(item, index) => (
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: item.color,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 24 }}>{item.title}</Text>
+                  </View>
+                )}
+              />
+            </View>
+            <View style={{ paddingHorizontal: 4, marginTop: 8 }}>
+              <Carousel
+                data={[
+                  {
+                    uri: 'https://plus.unsplash.com/premium_photo-1747371476846-1af8fbc9f3c3?q=80&w=2920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                  },
+                  {
+                    uri: 'https://plus.unsplash.com/premium_photo-1747135794838-a6afe928a90c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                  },
+                  {
+                    uri: 'https://images.unsplash.com/photo-1746937807433-05748b80caf4?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                  },
+                ]}
+                height={300}
+                showIndicators={true}
+                showArrows={true}
+                autoPlay={true}
+                autoPlayInterval={2500}
+                loop={true}
+                initialIndex={1}
+                onSlideChange={index => console.log('Current slide:', index)}
+                activeIndicatorColor="#2196F3"
+                inactiveIndicatorColor="#BBDEFB"
+                renderItem={(item, index) => (
+                  <Image
+                    source={{ uri: item.uri }}
+                    style={{ width: '100%', height: '100%' }}
+                    resizeMode="cover"
+                  />
+                )}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>

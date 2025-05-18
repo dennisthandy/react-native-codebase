@@ -1,33 +1,12 @@
 import { colors } from '@/src/constants/colors.constants';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
-import {
-  Image,
-  ImageStyle,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  ViewProps,
-  ViewStyle,
-} from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import Text from '../../Text';
 import View from '../../View';
+import { CardProps } from '../Card';
 import getShadowStyle from './getShadowStyle';
 
-type Props = ViewProps & {
-  children: React.ReactNode;
-  title?: string;
-  subtitle?: string;
-  imageSource?: string | { uri: string };
-  imageHeight?: number;
-  footer?: React.ReactNode;
-  titleStyle?: StyleProp<TextStyle>;
-  subtitleStyle?: StyleProp<TextStyle>;
-  contentStyle?: StyleProp<ViewStyle>;
-  imageStyle?: StyleProp<ImageStyle>;
-  footerStyle?: StyleProp<ViewStyle>;
-  shadowIntensity?: 0 | 1 | 2 | 3 | 4 | 5;
-  variant?: CardVariant;
-};
+type Props = CardProps;
 
 export default function CardContent({
   style,
