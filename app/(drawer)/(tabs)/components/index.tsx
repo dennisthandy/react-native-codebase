@@ -1,6 +1,7 @@
 import Accordion from '@/src/components/commons/Accordion';
 import Alert from '@/src/components/commons/Alert';
 import Badge from '@/src/components/commons/Badge';
+import BottomSheet from '@/src/components/commons/BottomSheet';
 import Button from '@/src/components/commons/Button';
 import Card from '@/src/components/commons/Card';
 import Carousel from '@/src/components/commons/Carousel';
@@ -11,10 +12,13 @@ import View from '@/src/components/commons/View';
 import { colors } from '@/src/constants/colors.constants';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useState } from 'react';
 import { Image, ScrollView } from 'react-native';
 
 export default function Components() {
   const color = useThemeColor({}, 'text');
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+
   return (
     <View style={{ flex: 1, padding: 8 }}>
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
@@ -354,6 +358,28 @@ export default function Components() {
                 )}
               />
             </View>
+          </View>
+          <View style={{ marginTop: 4 }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Bottom Sheet
+            </Text>
+            <Button onPress={() => setBottomSheetVisible(true)}>Open</Button>
+            <BottomSheet
+              visible={bottomSheetVisible}
+              onClose={() => setBottomSheetVisible(false)}
+              snapPoints={[0.3, 0.6, 0.9]} // Can snap to 30%, 60%, or 90% of screen height
+              initialSnapIndex={1} // Start at 60%
+              enableBackdropDismiss={true}
+            >
+              <View>
+                <Text>Bottom Sheet</Text>
+                <Text>
+                  This is a draggable bottom sheet that uses our custom Portal system. Try dragging
+                  it up and down to see how it snaps to different heights.
+                </Text>
+                <Button onPress={() => setBottomSheetVisible(false)}>Close</Button>
+              </View>
+            </BottomSheet>
           </View>
         </View>
       </ScrollView>
