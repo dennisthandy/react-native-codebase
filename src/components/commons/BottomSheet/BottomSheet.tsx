@@ -20,8 +20,7 @@ import View from '../View';
 type Props = ViewProps & {
   visible: boolean;
   onClose: () => void;
-  snapPoints?: number[];
-  initialSnapIndex?: number;
+  sheetHeight?: number | string; // Height of the sheet (can be number or percentage string)
   enableBackdropDismiss?: boolean;
   backdropOpacity?: number;
   handleIndicatorStyle?: StyleProp<ViewProps>;
@@ -29,13 +28,20 @@ type Props = ViewProps & {
   animationDuration?: number;
 };
 
+const calculateSheetPosition = (sheetHeight?: number | string) => {
+  if (typeof sheetHeight === 'string' && sheetHeight.endsWith('%')) {
+    const percentage = parseFloat(sheetHeight) / 100;
+    return dimensions.height * (1 - percentage);
+  }
+  return dimensions.height - Number(sheetHeight);
+};
+
 export const BottomSheet = ({
   visible,
   onClose,
   children,
   style,
-  snapPoints = [0.5], // Array of values between 0-1 representing percentage of screen height
-  initialSnapIndex = 0,
+  sheetHeight = '50%', // Default to 50% of screen height
   enableBackdropDismiss = true,
   backdropOpacity = 0.5,
   handleIndicatorStyle = {},
@@ -43,18 +49,13 @@ export const BottomSheet = ({
   animationDuration = 300,
   ...props
 }: Props) => {
-  const color = useThemeColor({}, 'text');
   const backgroundColor = useThemeColor({}, 'background');
   const translateY = useRef(new Animated.Value(dimensions.height)).current;
   const backdropOpacityAnim = useRef(new Animated.Value(0)).current;
-  const [sheetHeight, setSheetHeight] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
   const [isAtTop, setIsAtTop] = useState(false);
-  const [currentSnapIndex, setCurrentSnapIndex] = useState(initialSnapIndex);
 
-  // Calculate absolute snap points based on percentages
-  const absoluteSnapPoints = snapPoints.map(point =>
-    typeof point === 'number' ? dimensions.height * (1 - point) : point,
-  );
+  const sheetPosition = calculateSheetPosition(sheetHeight);
 
   // Pan responder to handle dragging of bottom sheet
   const panResponder = useRef(
@@ -62,60 +63,33 @@ export const BottomSheet = ({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, gestureState) => {
         const { dy } = gestureState;
-        // Only move if dragging down or if at top and dragging up
+        // Only allow dragging down or if at top and dragging up
         if (dy > 0 || (isAtTop && dy < 0)) {
-          translateY.setValue(absoluteSnapPoints[currentSnapIndex] + dy);
+          translateY.setValue(sheetPosition + dy);
         }
       },
       onPanResponderRelease: (_, gestureState) => {
         const { dy, vy } = gestureState;
 
-        // Determine which snap point to go to based on velocity and position
-        let nextSnapIndex = currentSnapIndex;
-
-        // If dragging down with enough velocity or distance, go to next lower snap point
-        if (dy > 50 || vy > 0.5) {
-          nextSnapIndex = Math.min(absoluteSnapPoints.length - 1, currentSnapIndex + 1);
-        }
-        // If dragging up with enough velocity or distance, go to next higher snap point
-        else if (dy < -50 || vy < -0.5) {
-          nextSnapIndex = Math.max(0, currentSnapIndex - 1);
-        }
-
-        // If next snap point is beyond the end, close the sheet
-        if (nextSnapIndex >= absoluteSnapPoints.length) {
+        // Close if dragged down more than threshold or with significant velocity
+        if (dy > 100 || vy > 0.5) {
           closeSheet();
         } else {
-          snapToIndex(nextSnapIndex);
+          // Snap back to open position
+          Animated.spring(translateY, {
+            toValue: sheetPosition,
+            useNativeDriver: true,
+            bounciness: 4,
+          }).start();
         }
       },
     }),
   ).current;
 
-  // Function to snap to a specific index
-  const snapToIndex = (index: number) => {
-    if (index >= absoluteSnapPoints.length) {
-      closeSheet();
-      return;
-    }
-
-    setCurrentSnapIndex(index);
-    Animated.spring(translateY, {
-      toValue: absoluteSnapPoints[index],
-      useNativeDriver: true,
-      bounciness: 4,
-    }).start();
-  };
-
-  // Open the sheet when visible changes to true
   useEffect(() => {
     if (visible) {
       Keyboard.dismiss();
-
-      // Start with the sheet fully down
       translateY.setValue(dimensions.height);
-
-      // Then animate up to initial snap point
       Animated.parallel([
         Animated.timing(backdropOpacityAnim, {
           toValue: backdropOpacity,
@@ -123,18 +97,14 @@ export const BottomSheet = ({
           useNativeDriver: true,
         }),
         Animated.spring(translateY, {
-          toValue: absoluteSnapPoints[initialSnapIndex],
+          toValue: sheetPosition,
           useNativeDriver: true,
           bounciness: 4,
         }),
       ]).start();
-
-      setCurrentSnapIndex(initialSnapIndex);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+  }, [visible, sheetPosition, backdropOpacity, animationDuration, translateY, backdropOpacityAnim]);
 
-  // Close the sheet
   const closeSheet = () => {
     Animated.parallel([
       Animated.timing(backdropOpacityAnim, {
@@ -147,9 +117,7 @@ export const BottomSheet = ({
         duration: animationDuration,
         useNativeDriver: true,
       }),
-    ]).start(() => {
-      onClose();
-    });
+    ]).start(onClose);
   };
 
   // Handle scroll events to determine if at top or not
@@ -165,7 +133,12 @@ export const BottomSheet = ({
       <View style={styles.container}>
         {/* Backdrop */}
         <TouchableWithoutFeedback onPress={enableBackdropDismiss ? closeSheet : undefined}>
-          <Animated.View style={[styles.backdrop, { opacity: backdropOpacityAnim }]} />
+          <Animated.View
+            style={[
+              styles.backdrop,
+              { opacity: backdropOpacityAnim, backgroundColor: 'rgba(0,0,0,0.5)' },
+            ]}
+          />
         </TouchableWithoutFeedback>
 
         {/* Bottom Sheet */}
@@ -178,10 +151,10 @@ export const BottomSheet = ({
             {
               transform: [{ translateY }],
               maxHeight: dimensions.height * 0.9, // Limit max height to 90% of screen
-              minHeight: 100, // Minimum height for the sheet
+              minHeight: 100,
             },
           ]}
-          onLayout={e => setSheetHeight(e.nativeEvent.layout.height)}
+          onLayout={e => setContentHeight(e.nativeEvent.layout.height)}
         >
           {/* Drag Handle */}
           <View style={styles.dragHandleContainer} {...panResponder.panHandlers}>
@@ -190,7 +163,7 @@ export const BottomSheet = ({
 
           {/* Content */}
           <Animated.ScrollView
-            style={[styles.contentContainer, { height: sheetHeight }, contentContainerStyle]}
+            style={[styles.contentContainer, { height: contentHeight }, contentContainerStyle]}
             onScroll={handleScroll}
             scrollEventThrottle={16}
             keyboardShouldPersistTaps="handled"

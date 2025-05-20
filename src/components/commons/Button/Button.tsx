@@ -37,7 +37,7 @@ export const Button: FC<Props> = ({
 
   const content =
     typeof children === 'string' ? (
-      <Text {...textProps} darkColor={textColor} lightColor={textColor}>
+      <Text {...textProps} variant="button" darkColor={textColor} lightColor={textColor}>
         {children}
       </Text>
     ) : (

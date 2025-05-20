@@ -8,6 +8,7 @@ import Carousel from '@/src/components/commons/Carousel';
 import Grid from '@/src/components/commons/Grid';
 import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
+import { ToastManager } from '@/src/components/commons/Toastr/Toastr';
 import View from '@/src/components/commons/View';
 import { colors } from '@/src/constants/colors.constants';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
@@ -18,6 +19,37 @@ import { Image, ScrollView } from 'react-native';
 export default function Components() {
   const color = useThemeColor({}, 'text');
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+
+  const showToast = (type: string) => {
+    switch (type) {
+      case 'success':
+        ToastManager.success({ message: 'Operation completed successfully!' });
+        break;
+      case 'error':
+        ToastManager.error({ message: 'Something went wrong. Please try again.' });
+        break;
+      case 'info':
+        ToastManager.info({ message: 'Here is some information for you.' });
+        break;
+      case 'warning':
+        ToastManager.warning({ message: 'Warning: This action cannot be undone.' });
+        break;
+      case 'action':
+        ToastManager.showToast({
+          message: 'Would you like to undo?',
+          actionText: 'UNDO',
+          type: 'info',
+          duration: 5000,
+          onPress: () => console.log('Undo pressed'),
+        });
+        break;
+      case 'top':
+        ToastManager.info({ message: 'Toast at the top', options: { position: 'top' } });
+        break;
+      default:
+        ToastManager.showToast({ message: 'Default toast message' });
+    }
+  };
 
   return (
     <View style={{ flex: 1, padding: 8 }}>
@@ -367,8 +399,6 @@ export default function Components() {
             <BottomSheet
               visible={bottomSheetVisible}
               onClose={() => setBottomSheetVisible(false)}
-              snapPoints={[0.3, 0.6, 0.9]} // Can snap to 30%, 60%, or 90% of screen height
-              initialSnapIndex={1} // Start at 60%
               enableBackdropDismiss={true}
             >
               <View>
@@ -380,6 +410,49 @@ export default function Components() {
                 <Button onPress={() => setBottomSheetVisible(false)}>Close</Button>
               </View>
             </BottomSheet>
+          </View>
+          <View style={{ marginTop: 4 }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Toastr
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <Button
+                style={{ backgroundColor: colors.support.success[500], marginRight: 8 }}
+                onPress={() => showToast('success')}
+              >
+                Success
+              </Button>
+              <Button
+                style={{ backgroundColor: colors.support.error[500], marginRight: 8 }}
+                onPress={() => showToast('error')}
+              >
+                Error
+              </Button>
+              <Button
+                style={{ backgroundColor: colors.support.info[500], marginRight: 8 }}
+                onPress={() => showToast('info')}
+              >
+                Info
+              </Button>
+              <Button
+                style={{ backgroundColor: colors.support.warning[500], marginRight: 8 }}
+                onPress={() => showToast('warning')}
+              >
+                Warning
+              </Button>
+              <Button
+                style={{ backgroundColor: colors.support.success[500], marginRight: 8 }}
+                onPress={() => showToast('action')}
+              >
+                With Action
+              </Button>
+              <Button
+                style={{ backgroundColor: colors.support.info[500], marginRight: 8 }}
+                onPress={() => showToast('top')}
+              >
+                Top Toast
+              </Button>
+            </ScrollView>
           </View>
         </View>
       </ScrollView>

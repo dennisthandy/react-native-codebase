@@ -21,3 +21,14 @@ type MansoryItem = {
 type AlertVariant = 'info' | 'success' | 'warning' | 'error' | 'default';
 
 type CardVariant = 'default' | 'outlined';
+
+type Toast = {
+  id?: string;
+  message: string;
+  type?: 'default' | 'success' | 'info' | 'warning' | 'error';
+  position?: 'bottom' | 'top';
+  onPress?: () => void;
+  actionText?: string;
+  animationDuration?: number;
+  duration?: number;
+};
