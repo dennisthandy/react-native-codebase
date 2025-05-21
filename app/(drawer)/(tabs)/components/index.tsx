@@ -10,15 +10,36 @@ import MasonryGrid from '@/src/components/commons/MansoryGrid';
 import Text from '@/src/components/commons/Text';
 import { ToastManager } from '@/src/components/commons/Toastr/Toastr';
 import View from '@/src/components/commons/View';
+import TextInput from '@/src/components/forms/TextInput';
 import { colors } from '@/src/constants/colors.constants';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Image, ScrollView } from 'react-native';
+import { z } from 'zod';
+
+const defaultValues = {
+  textInput: '',
+  textInputNumber: '',
+  textInputPassword: '',
+  textInputEmail: '',
+  textInputArea: '',
+  textInputWithFormatter: '',
+  textInputWithMask: '',
+};
+
+const formSchema = z.object({
+  textInput: z.string().min(1, { message: 'Text input is required' }),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 export default function Components() {
   const color = useThemeColor({}, 'text');
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const { control, handleSubmit } = useForm({ defaultValues, resolver: zodResolver(formSchema) });
 
   const showToast = (type: string) => {
     switch (type) {
@@ -378,7 +399,7 @@ export default function Components() {
                 autoPlayInterval={2500}
                 loop={true}
                 initialIndex={1}
-                onSlideChange={index => console.log('Current slide:', index)}
+                // onSlideChange={index => console.log('Current slide:', index)}
                 activeIndicatorColor="#2196F3"
                 inactiveIndicatorColor="#BBDEFB"
                 renderItem={(item, index) => (
@@ -453,6 +474,27 @@ export default function Components() {
                 Top Toast
               </Button>
             </ScrollView>
+          </View>
+        </View>
+        <View style={{ borderBottomWidth: 1, borderColor: color, paddingBottom: 4 }}>
+          <Text variant="h2" style={{ color: colors.primary.main }}>
+            Forms
+          </Text>
+          <View style={{ marginTop: 4 }}>
+            <Text variant="h3" style={{ marginBottom: 4 }}>
+              Text Inputs
+            </Text>
+            <View style={{ paddingHorizontal: 4 }}>
+              <TextInput
+                placeholder="Enter a text"
+                name="textInput"
+                control={control}
+                label={'Text Input'}
+              />
+              <Button style={{ width: '100%' }} onPress={handleSubmit(v => console.log(v))}>
+                Submit
+              </Button>
+            </View>
           </View>
         </View>
       </ScrollView>
