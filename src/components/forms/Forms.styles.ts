@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   inputContainer: {
     flexDirection: 'row',

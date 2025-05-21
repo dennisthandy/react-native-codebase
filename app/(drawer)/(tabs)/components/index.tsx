@@ -13,7 +13,8 @@ import View from '@/src/components/commons/View';
 import TextInput from '@/src/components/forms/TextInput';
 import { colors } from '@/src/constants/colors.constants';
 import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { formatCurrency } from '@/src/utils/common.utils';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,11 +28,15 @@ const defaultValues = {
   textInputEmail: '',
   textInputArea: '',
   textInputWithFormatter: '',
-  textInputWithMask: '',
 };
 
 const formSchema = z.object({
   textInput: z.string().min(1, { message: 'Text input is required' }),
+  textInputNumber: z.string().min(1, { message: 'Text input number is required' }),
+  textInputPassword: z.string().min(1, { message: 'Text input password is required' }),
+  textInputEmail: z.string().email({ message: 'Email is required' }),
+  textInputArea: z.string().min(1, { message: 'Text input area is required' }),
+  textInputWithFormatter: z.string().min(1, { message: 'Text input formatter is required' }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -490,6 +495,46 @@ export default function Components() {
                 name="textInput"
                 control={control}
                 label={'Text Input'}
+                leftIcon={<Ionicons name="search" size={16} color={color} />}
+              />
+              <TextInput
+                placeholder="Enter a text"
+                name="textInputNumber"
+                control={control}
+                label={'Text Input Number'}
+                rightLabel="Kg"
+                keyboardType="numeric"
+              />
+              <TextInput
+                placeholder="Enter a text"
+                name="textInputPassword"
+                control={control}
+                label={'Text Input Password'}
+                secureTextEntry={true}
+              />
+              <TextInput
+                placeholder="Enter a email"
+                name="textInputEmail"
+                control={control}
+                label={'Text Input Email'}
+                rightIcon={<Ionicons name="mail" size={16} color={color} />}
+                keyboardType="email-address"
+              />
+              <TextInput
+                placeholder="Enter a area"
+                name="textInputArea"
+                control={control}
+                label={'Text Input Area'}
+                multiline={true}
+                numberOfLines={4}
+              />
+              <TextInput
+                leftLabel="$"
+                placeholder="Enter a formatted text"
+                name="textInputWithFormatter"
+                control={control}
+                label={'Text Input Formater'}
+                formatter={formatCurrency}
               />
               <Button style={{ width: '100%' }} onPress={handleSubmit(v => console.log(v))}>
                 Submit
